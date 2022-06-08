@@ -1,0 +1,12 @@
+micronaut:
+  application:
+    name: encryptAndDecryptExample
+netty:
+  default:
+    allocator:
+      max-order: 3
+# Added so that the configuration hard-coded in the Baeldung example could be parameterized. The use
+# case involves rotating this secret over time.
+encryption:
+  password: "mypassword"
+  salt: "mysalt"
