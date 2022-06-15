@@ -27,11 +27,3 @@ curl --request POST \
   --header 'Content-Type: text/plain' \
   --data 'IObNzU1ocw8PCAy382jN+Q=='
 ```
-
-## issues
-
-Expected to get the same output from `/encrypt` given the same input each time, but this only happens per process. Each time the app starts up, we get new output for a given input. Why?
-
-Is it because the Baeldung example is meant for use cases where you won't be storing the encrypted data, needing to decrypt it in another process in the future?
-
-If so, how do we configure encryption and decryption to enable our use case?
