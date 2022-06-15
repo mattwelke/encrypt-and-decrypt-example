@@ -73,8 +73,8 @@ public class EncryptionService {
     }
 
     /**
-     * Encrypts an input string.
-     * From https://www.baeldung.com/java-aes-encryption-decryption
+     * Encrypts an input string. From
+     * https://www.baeldung.com/java-aes-encryption-decryption
      * 
      * @param input The input string to be encrypted and encoded as Base64.
      * @return The encrypted input string encoded as a Base64 string.
@@ -82,14 +82,13 @@ public class EncryptionService {
      * @throws BadPaddingException
      */
     public String encryptString(String input) throws IllegalBlockSizeException, BadPaddingException {
-
         byte[] cipherText = cipherEnc.doFinal(input.getBytes());
         return encoder.encodeToString(cipherText);
     }
 
     /**
-     * Decrypts an input string.
-     * From https://www.baeldung.com/java-aes-encryption-decryption
+     * Decrypts an input string. From
+     * https://www.baeldung.com/java-aes-encryption-decryption
      * 
      * @param input The input string to be decoded from Base64 and decrypted.
      * @return The input string decoded from Base64 and decrypted back to its
@@ -98,7 +97,6 @@ public class EncryptionService {
      * @throws IllegalBlockSizeException
      */
     public String decryptString(String input) throws IllegalBlockSizeException, BadPaddingException {
-
         byte[] plainText = cipherDec.doFinal(decoder.decode(input));
         return new String(plainText);
     }
@@ -106,8 +104,8 @@ public class EncryptionService {
     // Helpers for init:
 
     /**
-     * Creates the SecretKey.
-     * From https://www.baeldung.com/java-aes-encryption-decryption
+     * Creates the SecretKey. From
+     * https://www.baeldung.com/java-aes-encryption-decryption
      * 
      * @param password
      * @param salt
@@ -119,20 +117,38 @@ public class EncryptionService {
             throws NoSuchAlgorithmException, InvalidKeySpecException {
         SecretKeyFactory factory = SecretKeyFactory.getInstance(SECRET_KEY_FACTORY_STRING);
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 256);
-        SecretKey secret = new SecretKeySpec(factory.generateSecret(spec)
-                .getEncoded(), "AES");
+        SecretKey secret = new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
         return secret;
     }
 
     /**
-     * Creates the IvParameterSpec.
-     * From https://www.baeldung.com/java-aes-encryption-decryption
+     * Creates the IvParameterSpec. From
+     * https://www.baeldung.com/java-aes-encryption-decryption
      * 
      * @return
      */
     private static IvParameterSpec generateIv() {
-        byte[] iv = new byte[16];
-        new SecureRandom().nextBytes(iv);
+        // Hard-coded bytes for encrypting and decrypting. Not changing each time with SecureRandom like in the
+        // Baeldung tutorial. Needed to do it this way in order to be able to decrypt the data when the application
+        // booted up again.
+        byte[] iv = {
+            (byte) 0xc6,
+            (byte) 0x9d,
+            (byte) 0xe,
+            (byte) 0x86,
+            (byte) 0x94,
+            (byte) 0xee,
+            (byte) 0xe3,
+            (byte) 0xf2,
+            (byte) 0x49,
+            (byte) 0x11,
+            (byte) 0x4,
+            (byte) 0xbb,
+            (byte) 0x9b,
+            (byte) 0xaf,
+            (byte) 0x44,
+            (byte) 0xfc
+        };
         return new IvParameterSpec(iv);
     }
 }
